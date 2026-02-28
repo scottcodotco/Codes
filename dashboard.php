@@ -16,7 +16,17 @@ include __DIR__ . '/includes/header.php';
     <h2>Welcome, <?php echo htmlspecialchars($_SESSION['full_name']); ?>!</h2>
 
     <p>Your role: <?php echo htmlspecialchars($_SESSION['role']); ?></p>
-    <p>You are logged in.</p>
+
+    <?php if ($_SESSION['role'] === 'student'): ?>
+        <p>Ready to order? <a href="/CampusEats/menu.php" class="order-button">View menu</a></p>
+        <p>Your recent orders will appear here once you start ordering.</p>
+    <?php elseif ($_SESSION['role'] === 'vendor'): ?>
+        <p>Manage your offerings by adding or editing menu items.</p>
+        <p><a href="/CampusEats/vendor/dashboard.php" class="order-button">Vendor panel</a></p>
+    <?php else: ?>
+        <p>Explore the site using the navigation above.</p>
+    <?php endif; ?>
+
     <p><a href="auth/logout.php" class="order-button">Logout</a></p>
 </div>
 
