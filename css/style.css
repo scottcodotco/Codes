@@ -1,0 +1,168 @@
+/* Basic styles for CampusEats pages */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+h1, h2, h3 {
+    font-weight: 300;
+    margin: 0 0 15px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+input[type=email], input[type=password], input[type=text] {
+    width: 100%;
+    padding: 8px;
+    margin: 6px 0 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #5c9ded;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #4a8ad4;
+}
+
+p {
+    text-align: center;
+    line-height: 1.5;
+}
+
+a {
+    color: #5c9ded;
+    text-decoration: none;
+}
+
+/* form tweaks */
+/* first container rules removed since overlay below handles them */
+
+.container h2 {
+    color: #ff6f00;
+}
+
+/* optional background image / pattern */
+body {
+    background: url('../images/canteen-bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+/* header/footer classes already defined earlier */
+
+
+/* header and nav */
+header {
+    background-color: #ff6f00;
+    color: white;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+header .header-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+nav a {
+    margin-left: 15px;
+    color: white;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
+
+/* container background overlay */
+.container {
+    width: 320px;
+    margin: 50px auto; /* center horizontally with space above */
+    padding: 30px 25px;
+    background: rgba(255,255,255,0.95);
+    border-radius: 6px;
+}
+
+.container h2 {
+    color: #ff6f00;
+}
+
+/* table/menu styling */
+table.menu {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table.menu th, table.menu td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+table.menu th {
+    background-color: #ffcc80;
+}
+
+/* buttons for ordering */
+.order-button {
+    background-color: #ff6f00;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.order-button:hover {
+    background-color: #e65c00;
+}
+
+/* footer */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 10px;
+    background: #fafafa;
+    color: #666;
+}
+
+/* form label styling */
+label {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 4px;
+}
+
