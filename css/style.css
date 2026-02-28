@@ -1,8 +1,12 @@
 /* Basic styles for CampusEats pages */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+
+/* layout & typography */
 body {
     font-family: 'Roboto', Arial, sans-serif;
-    background-color: #f5f5f5;
+    background-color: #f0f2f5;
+    /* fallback gradient if image missing */
+    background-image: linear-gradient(135deg, #f0f2f5 0%, #ffffff 100%);
     margin: 0;
     padding: 0;
     color: #333;
@@ -18,13 +22,20 @@ h2 {
     margin-bottom: 20px;
 }
 
-input[type=email], input[type=password], input[type=text] {
+input[type=email], input[type=password], input[type=text], select {
     width: 100%;
-    padding: 8px;
+    padding: 10px 12px;
     margin: 6px 0 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type=email]:focus, input[type=password]:focus, input[type=text]:focus, select:focus {
+    border-color: #5c9ded;
+    box-shadow: 0 0 5px rgba(92,157,237,0.5);
+    outline: none;
 }
 
 button {
@@ -36,15 +47,36 @@ button {
     font-size: 16px;
     border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
 }
 
 button:hover {
     background-color: #4a8ad4;
 }
 
+button:active {
+    transform: scale(0.98);
+}
+
 p {
     text-align: center;
     line-height: 1.5;
+}
+
+/* utility for error/success messages */
+.alert {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+    font-size: 14px;
+}
+.alert.error {
+    background-color: #ffe6e6;
+    color: #cc0000;
+}
+.alert.success {
+    background-color: #e6ffea;
+    color: #006600;
 }
 
 a {
@@ -59,21 +91,44 @@ a {
     color: #ff6f00;
 }
 
-/* optional background image / pattern */
+/* optional background image / pattern (removed by default; uncomment if you supply an image)
 body {
     background: url('../images/canteen-bg.jpg') no-repeat center center fixed;
     background-size: cover;
 }
+*/
 
 /* header/footer classes already defined earlier */
 
 
-/* header and nav */
+/* header/nav */
 header {
     background-color: #ff6f00;
     color: white;
     padding: 10px 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+nav a {
+    margin-left: 15px;
+    color: white;
+    font-weight: 500;
+    text-decoration: none;
+    position: relative;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: white;
 }
 
 header .header-inner {
@@ -106,14 +161,19 @@ main {
     padding: 0 15px;
 }
 
-/* container background overlay */
+/* make containers responsive */
 .container {
-    width: 320px;
-    margin: 50px auto; /* center horizontally with space above */
+    width: 90%;
+    max-width: 400px;
+    margin: 50px auto;
     padding: 30px 25px;
     background: rgba(255,255,255,0.95);
     border-radius: 6px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
+
+/* container background overlay */
+/* (moved above with responsive adjustments) */
 
 .container h2 {
     color: #ff6f00;
@@ -124,6 +184,21 @@ table.menu {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+}
+
+/* media queries for smaller screens */
+@media (max-width: 500px) {
+    header .header-inner {
+        flex-direction: column;
+        text-align: center;
+    }
+    nav a {
+        margin: 5px 0;
+    }
+    .container {
+        margin: 30px auto;
+        padding: 20px 15px;
+    }
 }
 
 table.menu th, table.menu td {

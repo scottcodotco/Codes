@@ -15,6 +15,7 @@ include __DIR__ . '/includes/header.php';
 <div class="container">
     <h2>Welcome, <?php echo htmlspecialchars($_SESSION['full_name']); ?>!</h2>
 
+    <p>Your role: <?php echo htmlspecialchars($_SESSION['role']); ?></p>
     <p>You are logged in.</p>
     <p><a href="auth/logout.php" class="order-button">Logout</a></p>
 </div>

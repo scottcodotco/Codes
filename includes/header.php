@@ -16,7 +16,9 @@ if (!isset($pageTitle)) {
 <body>
 <header>
     <div class="header-inner">
-        <h1>CampusEats</h1>
+        <h1>CampusEats <?php if(isset(
+$_SESSION['role'])) echo '('.htmlspecialchars(
+$_SESSION['role']).')'; ?></h1>
         <nav>
             <?php if (isset($_SESSION['user_id'])): ?>
                 <a href="/CampusEats/dashboard.php">Dashboard</a>

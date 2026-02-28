@@ -9,11 +9,22 @@ if (!$conn || mysqli_connect_errno()) {
     die("Database connection failed: " . mysqli_connect_error());
 }
 
+// ensure users table has a role column (student/vendor)
+$colcheck = mysqli_query($conn, "SHOW COLUMNS FROM users LIKE 'role'");
+if ($colcheck && mysqli_num_rows($colcheck) == 0) {
+    mysqli_query($conn, "ALTER TABLE users ADD COLUMN role VARCHAR(20) NOT NULL DEFAULT 'student'");
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $full_name = mysqli_real_escape_string($conn, $_POST['full_name']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    // role should be either 'student' or 'vendor'; default to student if anything else
+    $role = isset($_POST['role']) ? mysqli_real_escape_string($conn, $_POST['role']) : 'student';
+    if ($role !== 'student' && $role !== 'vendor') {
+        $role = 'student';
+    }
 
     // ensure connection didn't drop (ping reconnect)
     if (!mysqli_ping($conn)) {
@@ -33,8 +44,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (mysqli_num_rows($check) > 0) {
         $error = "Email is already registered.";
     } else {
-        $query = "INSERT INTO users (full_name, email, password)
-                  VALUES ('$full_name', '$email', '$password')";
+        $query = "INSERT INTO users (full_name, email, password, role)
+                  VALUES ('$full_name', '$email', '$password', '$role')";
 
         if (!mysqli_query($conn, $query)) {
             die("Insertion error: " . mysqli_error($conn));
@@ -51,9 +62,9 @@ include __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="container">
-    <h2>Register</h2>
+    <h2>Register (student or vendor)</h2>
 
-    <?php if(isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
+    <?php if(isset($error)) echo "<p class='alert error'>" . htmlspecialchars($error) . "</p>"; ?>
 
     <form method="POST">
         Full Name: <br>
@@ -64,6 +75,12 @@ include __DIR__ . '/../includes/header.php';
 
         Password: <br>
         <input type="password" name="password" required><br><br>
+
+        Role: <br>
+        <select name="role" required>
+            <option value="student">Student</option>
+            <option value="vendor">Vendor</option>
+        </select><br><br>
 
         <button type="submit">Register</button>
     </form>
