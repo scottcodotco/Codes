@@ -10,7 +10,8 @@ include __DIR__ . '/../includes/header.php';
 ?>
 <div class="container">
     <h2>Vendor Dashboard</h2>
-    <p>Here you will manage your menu items and orders.</p>
-    <p>Functionality coming soon.</p>
+    <p>Welcome to your vendor panel! To get started, add items you'd like to sell so students can place orders.</p>
+    <p><a href="add_item.php" class="order-button">Add menu item</a> (this page will be developed soon)</p>
+    <p>Your current offerings and incoming orders will appear here once they're set up.</p>
 </div>
 <?php include __DIR__ . '/../includes/footer.php';

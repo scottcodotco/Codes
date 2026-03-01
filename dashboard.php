@@ -8,6 +8,19 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+// if role wasn't stored in session (or is unexpected), try to retrieve from database
+if (empty($_SESSION['role']) || !in_array($_SESSION['role'], ['student','vendor'])) {
+    include __DIR__ . '/config/database.php';
+    $uid = intval($_SESSION['user_id']);
+    $res = mysqli_query($conn, "SELECT role FROM users WHERE id=$uid");
+    if ($res && mysqli_num_rows($res) === 1) {
+        $row = mysqli_fetch_assoc($res);
+        if (in_array($row['role'], ['student','vendor'])) {
+            $_SESSION['role'] = $row['role'];
+        }
+    }
+}
+
 $pageTitle = 'Dashboard';
 include __DIR__ . '/includes/header.php';
 ?>
@@ -25,6 +38,9 @@ include __DIR__ . '/includes/header.php';
         <p><a href="/CampusEats/vendor/dashboard.php" class="order-button">Vendor panel</a></p>
     <?php else: ?>
         <p>Explore the site using the navigation above.</p>
+        <?php if (empty($_SESSION['role'])): ?>
+            <p class="alert error">No role is assigned to your account; please re‑register or contact support.</p>
+        <?php endif; ?>
     <?php endif; ?>
 
     <p><a href="auth/logout.php" class="order-button">Logout</a></p>

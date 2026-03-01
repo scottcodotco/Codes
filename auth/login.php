@@ -4,17 +4,17 @@ ini_set('display_errors', 1);
 session_start();
 include("../config/database.php");
 
-// if role column doesn't exist yet, add it so login logic works
+// role column is managed by registration; no need to inspect on login anymore
 $colcheck = mysqli_query($conn, "SHOW COLUMNS FROM users LIKE 'role'");
 if ($colcheck && mysqli_num_rows($colcheck) == 0) {
-    mysqli_query($conn, "ALTER TABLE users ADD COLUMN role VARCHAR(20) NOT NULL DEFAULT 'student'");
+    // column will be created automatically during registration if missing
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $selected_role = isset($_POST['role']) ? $_POST['role'] : '';
+    // role selection removed; login simply uses stored role
 
     $query = "SELECT * FROM users WHERE email='$email'";
     $result = mysqli_query($conn, $query);
@@ -23,17 +23,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = mysqli_fetch_assoc($result);
 
         if (password_verify($password, $user['password'])) {
-            // make sure the user is choosing the correct role when logging in
-            if ($selected_role && $selected_role !== $user['role']) {
-                $error = "Role mismatch. Please choose the correct role.";
-            } else {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['full_name'] = $user['full_name'];
                 $_SESSION['role'] = $user['role'];
 
                 header("Location: ../dashboard.php");
                 exit();
-            }
         } else {
             $error = "Incorrect password!";
         }
@@ -45,25 +40,54 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // set page title and include header
 $pageTitle = 'Login';
 include __DIR__ . '/../includes/header.php';
+
+// check for registration success flash
+$regMessage = '';
+if (isset($_SESSION['reg_success'])) {
+    $roleMsg = isset($_SESSION['registered_role']) ? $_SESSION['registered_role'] : 'student';
+    $regMessage = "Account registered successfully as " . htmlspecialchars($roleMsg) . "!";
+    unset($_SESSION['reg_success'], $_SESSION['registered_role']);
+}
 ?>
 
 <div class="container">
-    <h2>Login (student or vendor)</h2>
+    <h2>Login</h2>
+
+    <?php if(!empty($regMessage)): ?>
+        <div id="infoModal">
+            <div class="modal-content">
+                <p><?php echo $regMessage; ?></p>
+                <button type="button" id="closeInfo">Close</button>
+            </div>
+        </div>
+    <?php endif; ?>
 
     <?php if(isset($error)) echo "<p class='alert error'>" . htmlspecialchars($error) . "</p>"; ?>
 
     <form method="POST">
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var info = document.getElementById('infoModal');
+        var closeBtn = document.getElementById('closeInfo');
+        if (info) {
+            info.classList.add('show');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    info.classList.remove('show');
+                });
+            }
+            // auto-hide after 4 seconds
+            setTimeout(function() { info.classList.remove('show'); }, 4000);
+        }
+    });
+    </script>
         <label>Email</label><br>
         <input type="email" name="email" required><br><br>
 
         <label>Password</label><br>
         <input type="password" name="password" required><br><br>
 
-        <label>Role</label><br>
-        <select name="role" required>
-            <option value="student">Student</option>
-            <option value="vendor">Vendor</option>
-        </select><br><br>
 
         <button type="submit">Login</button>
     </form>

@@ -172,14 +172,91 @@ main {
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-/* container background overlay */
-/* (moved above with responsive adjustments) */
-
-.container h2 {
-    color: #ff6f00;
+/* modal popup for role selection */
+#roleModal, #globalRoleModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+#roleModal.show, #globalRoleModal.show {
+    display: flex;
+    animation: fadeIn 0.25s ease-out;
+}
+#roleModal .modal-content, #globalRoleModal .modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 6px;
+    text-align: center;
+    max-width: 300px;
+    transform: scale(0.8);
+    transition: transform 0.25s ease-out;
+}
+#roleModal.show .modal-content, #globalRoleModal.show .modal-content {
+    transform: scale(1);
+}
+#roleModal button, #globalRoleModal button {
+    width: auto;
+    margin: 10px;
+    transition: background-color 0.2s, transform 0.1s;
+}
+#roleModal button:hover, #globalRoleModal button:hover {
+    background-color: #eee;
+}
+#roleModal button:active, #globalRoleModal button:active {
+    transform: scale(0.95);
 }
 
-/* table/menu styling */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* info/notification modal */
+#infoModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+#infoModal.show {
+    display: flex;
+    animation: fadeIn 0.25s ease-out;
+}
+#infoModal .modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 6px;
+    text-align: center;
+    max-width: 300px;
+    transform: scale(0.8);
+    transition: transform 0.25s ease-out;
+}
+#infoModal.show .modal-content {
+    transform: scale(1);
+}
+#infoModal button {
+    margin-top: 10px;
+    transition: background-color 0.2s, transform 0.1s;
+}
+#infoModal button:hover {
+    background-color: #eee;
+}
+#infoModal button:active {
+    transform: scale(0.95);
+}
 table.menu {
     width: 100%;
     border-collapse: collapse;
